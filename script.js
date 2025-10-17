@@ -1,11 +1,16 @@
+// Simple Touch Circles Game
 class TouchCirclesGame {
     constructor() {
+        console.log("Initializing game...");
         this.canvas = document.getElementById('gameCanvas');
         this.ctx = this.canvas.getContext('2d');
         this.scoreElement = document.getElementById('score');
         this.timerElement = document.getElementById('timer');
         this.startBtn = document.getElementById('startBtn');
         this.resetBtn = document.getElementById('resetBtn');
+        
+        console.log("Canvas:", this.canvas);
+        console.log("Canvas size:", this.canvas.width, "x", this.canvas.height);
         
         // Game state
         this.gameRunning = false;
@@ -16,19 +21,13 @@ class TouchCirclesGame {
         
         // Circle properties
         this.circle = {
-            x: 400,
-            y: 300,
-            radius: 30,
-            dx: 4,
-            dy: 4,
-            color: this.getRandomColor()
+            x: 100,
+            y: 100,
+            radius: 40,
+            dx: 3,
+            dy: 3,
+            color: '#FF6B6B'
         };
-        
-        // Colors for the circle
-        this.colors = [
-            '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7',
-            '#DDA0DD', '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E9'
-        ];
         
         this.setupEventListeners();
         this.startMovement();
@@ -41,13 +40,9 @@ class TouchCirclesGame {
         this.canvas.addEventListener('click', (e) => this.handleClick(e));
     }
     
-    getRandomColor() {
-        return this.colors[Math.floor(Math.random() * this.colors.length)];
-    }
-    
     startMovement() {
-        // Start the movement animation loop immediately
-        this.gameInterval = setInterval(() => this.gameLoop(), 16); // ~60 FPS
+        console.log("Starting movement animation...");
+        this.gameInterval = setInterval(() => this.gameLoop(), 16);
     }
     
     startGame() {
@@ -111,22 +106,20 @@ class TouchCirclesGame {
         );
         
         if (distance <= this.circle.radius) {
-            // Only score points if game is running
             if (this.gameRunning) {
                 this.score++;
                 this.updateDisplay();
             }
             
             this.circle.color = this.getRandomColor();
-            
-            // Add a little extra speed when clicked
             this.circle.dx *= 1.1;
             this.circle.dy *= 1.1;
-            
-            // Add visual feedback
-            this.canvas.classList.add('pulse');
-            setTimeout(() => this.canvas.classList.remove('pulse'), 300);
         }
+    }
+    
+    getRandomColor() {
+        const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7'];
+        return colors[Math.floor(Math.random() * colors.length)];
     }
     
     draw() {
@@ -139,27 +132,12 @@ class TouchCirclesGame {
         this.ctx.fillStyle = this.circle.color;
         this.ctx.fill();
         
-        // Add a subtle border
-        this.ctx.strokeStyle = '#333';
-        this.ctx.lineWidth = 2;
+        // Add border
+        this.ctx.strokeStyle = '#000';
+        this.ctx.lineWidth = 3;
         this.ctx.stroke();
         
-        // Add a subtle shadow effect
-        this.ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
-        this.ctx.shadowBlur = 10;
-        this.ctx.shadowOffsetX = 2;
-        this.ctx.shadowOffsetY = 2;
-        
-        // Redraw the circle with shadow
-        this.ctx.beginPath();
-        this.ctx.arc(this.circle.x, this.circle.y, this.circle.radius, 0, 2 * Math.PI);
-        this.ctx.fill();
-        
-        // Reset shadow
-        this.ctx.shadowColor = 'transparent';
-        this.ctx.shadowBlur = 0;
-        this.ctx.shadowOffsetX = 0;
-        this.ctx.shadowOffsetY = 0;
+        console.log(`Drawing circle at: x=${this.circle.x}, y=${this.circle.y}, color=${this.circle.color}`);
     }
     
     updateDisplay() {
@@ -170,23 +148,17 @@ class TouchCirclesGame {
     endGame() {
         this.gameRunning = false;
         clearInterval(this.timerInterval);
-        
         this.startBtn.disabled = false;
-        
-        // Show game over message
-        alert(`Game Over!\nFinal Score: ${this.score}\n\nClick Reset to play again!`);
+        alert(`Game Over!\nFinal Score: ${this.score}`);
     }
     
     resetGame() {
         this.endGame();
-        
-        // Reset circle to center
-        this.circle.x = 400;
-        this.circle.y = 300;
-        this.circle.dx = 4;
-        this.circle.dy = 4;
-        this.circle.color = this.getRandomColor();
-        
+        this.circle.x = 100;
+        this.circle.y = 100;
+        this.circle.dx = 3;
+        this.circle.dy = 3;
+        this.circle.color = '#FF6B6B';
         this.score = 0;
         this.timeLeft = 30;
         this.updateDisplay();
@@ -196,5 +168,6 @@ class TouchCirclesGame {
 
 // Initialize the game when the page loads
 document.addEventListener('DOMContentLoaded', () => {
+    console.log("DOM loaded, initializing game...");
     new TouchCirclesGame();
 });
