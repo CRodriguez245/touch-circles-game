@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Touch Circles Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-header">
+            <div class="score-display">
+                <span>Score: </span>
+                <span id="score">0</span>
+            </div>
+            <div class="timer-display">
+                <span>Time: </span>
+                <span id="timer">30</span>
+            </div>
+        </div>
+        
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        
+        <div class="game-controls">
+            <button id="startBtn">Start Game</button>
+            <button id="resetBtn">Reset</button>
+        </div>
+        
+        <div class="instructions">
+            <p>Click the bouncing circle to score points! You have 30 seconds.</p>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
